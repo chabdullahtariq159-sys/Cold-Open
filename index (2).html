@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cold Open: the 15-minute expert</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F5EFE3;--ink:#16120F;--red:#FF4B2B;--blue:#2B3BFF;--yel:#FFD21F;--pink:#FFB3D1;--sky:#BFE8FF;--card:#FFF9EA;--bg:var(--cream);--fg:var(--ink)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 1.05rem/1.5 'Work Sans',system-ui,sans-serif;min-height:100vh;transition:background .5s,color .5s;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+body[data-p=research]{--bg:var(--blue);--fg:var(--cream);background-image:linear-gradient(to top,rgba(255,255,255,.14) var(--pct,0%),transparent var(--pct,0%))}
+body[data-p=speak]{--bg:#0F0D0C;--fg:var(--cream)}
+.d,h1,h2,h3{font-family:Anton,Impact,'Arial Narrow',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.01em;line-height:1;margin:0}
+header{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;padding:1rem clamp(1rem,3vw,2.5rem)}
+.logo{font:400 1.6rem Anton,sans-serif;background:var(--yel);color:var(--ink);padding:.15em .6em;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);transform:rotate(-2deg);text-transform:uppercase}
+#track{display:flex;gap:.5rem;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+#track li{border:2px solid currentColor;border-radius:99px;padding:.15rem .9rem;font-weight:600;font-size:.85rem;opacity:.4}
+#track li.done{opacity:.8}#track li.now{opacity:1;background:var(--fg);color:var(--bg)}
+main{padding:0 clamp(1rem,3vw,2.5rem) 4rem;max-width:1240px;margin:0 auto}
+section{display:none}
+body[data-p=draw] #s-draw,body[data-p=research] #s-research,body[data-p=speak] #s-speak,body[data-p=debrief] #s-debrief{display:block}
+.btn{font:400 1.3rem Anton,sans-serif;text-transform:uppercase;letter-spacing:.03em;background:var(--red);color:var(--ink);border:3px solid var(--ink);border-radius:12px;padding:.55em 1.5em;box-shadow:5px 5px 0 var(--ink);cursor:pointer;transition:transform .08s,box-shadow .08s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+.btn:active{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--ink)}
+.btn.alt{background:var(--yel)}.btn.sm{font-size:1rem;padding:.4em 1em}
+.btn:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--yel);outline-offset:3px}
+.row{display:flex;gap:.9rem;flex-wrap:wrap;align-items:center;margin-top:1.5rem}
+select{font:600 .95rem inherit;font-family:inherit;border:3px solid var(--ink);border-radius:10px;padding:.5em .8em;background:var(--card);color:var(--ink)}
+/* draw */
+.kick{font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.8rem;margin:.5rem 0}
+.belt{overflow:hidden;border-block:3px solid var(--ink);margin:1rem calc(-1*clamp(1rem,3vw,2.5rem));background:var(--yel);transform:rotate(-1deg)}
+.belt+.belt{background:var(--sky);transform:rotate(1deg);margin-top:.2rem}
+.belt div{display:flex;gap:2.5rem;width:max-content;padding:.35rem 0;animation:belt 60s linear infinite;font:400 1.5rem Anton,sans-serif;text-transform:uppercase;white-space:nowrap}
+.belt+.belt div{animation-direction:reverse;animation-duration:75s}
+@keyframes belt{to{transform:translateX(-50%)}}
+.stage{background:var(--card);border:3px solid var(--ink);box-shadow:10px 10px 0 var(--ink);border-radius:18px;padding:clamp(1.2rem,3vw,2.4rem);margin:2.2rem 0 0;max-width:980px}
+#topic{font-size:clamp(2.6rem,8vw,6rem);min-height:2.1em;overflow-wrap:anywhere;color:var(--ink)}
+#topic.spin{color:var(--red);transform:skewX(-8deg)}
+#angle{color:#3d352f;font-size:1.15rem;margin:1rem 0 0;min-height:3em}
+.badge{display:inline-block;background:var(--ink);color:var(--yel);font-weight:800;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:99px}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.4rem;max-width:980px}
+.rules div{border:3px dashed currentColor;border-radius:14px;padding:1rem}
+.rules b{font:400 1.5rem Anton,sans-serif;display:block;text-transform:uppercase}
+/* research */
+.res{display:grid;grid-template-columns:1fr 1.2fr;gap:2.5rem;padding-top:1rem}
+#clock{font:400 clamp(5rem,17vw,12rem)/.9 Anton,sans-serif;font-variant-numeric:tabular-nums}
+#clock.late{color:var(--yel);animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:.5}}
+.res h2{font-size:clamp(2rem,4.5vw,3.4rem);margin:1.4rem 0 .6rem}
+.note{display:flex;gap:.6rem}
+.note input{flex:1;font:inherit;border:3px solid var(--ink);border-radius:12px;padding:.8em 1em;background:var(--card);color:var(--ink);min-width:0}
+#cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.9rem;margin-top:1.2rem}
+#cards button{font:inherit;text-align:left;color:var(--ink);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:.8rem;border-radius:4px;cursor:pointer;animation:pop .25s}
+#cards button:nth-child(4n+1){background:var(--yel);transform:rotate(-1.5deg)}
+#cards button:nth-child(4n+2){background:var(--pink);transform:rotate(1.2deg)}
+#cards button:nth-child(4n+3){background:var(--card);transform:rotate(-.6deg)}
+#cards button:nth-child(4n){background:var(--sky);transform:rotate(1.8deg)}
+@keyframes pop{from{transform:scale(.6);opacity:0}}
+#cnt{font-weight:800;margin:.8rem 0 0}
+/* speak */
+#s-speak{text-align:center;padding-top:.5rem}
+.air{display:inline-block;font:400 2rem Anton,sans-serif;letter-spacing:.12em;color:#5a1a10;border:4px solid #5a1a10;border-radius:10px;padding:.1em .7em;transition:.3s}
+.air.on{color:#fff;background:var(--red);border-color:#ffb3a3;box-shadow:0 0 40px 8px rgba(255,75,43,.7);animation:glow 1.4s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 0 70px 16px rgba(255,75,43,.9)}}
+#s-speak h2{font-size:clamp(2rem,5vw,3.6rem);max-width:20ch;margin:1.2rem auto}
+.ring{position:relative;width:min(280px,70vw);margin:0 auto}
+.ring svg{width:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:12}
+#rg{stroke:var(--yel);stroke-linecap:round;stroke-dasharray:754}
+.ring .d{position:absolute;inset:0;display:grid;place-items:center;font-size:6rem}
+#live{width:min(640px,92vw);height:70px;display:block;margin:1.2rem auto 0}
+#sstat{min-height:3em;margin:1rem auto 0;max-width:34rem;opacity:.8}
+/* debrief */
+.bento{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.1rem;margin-top:1rem}
+.tile{border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);border-radius:16px;padding:1.1rem;color:var(--ink);background:var(--card)}
+.tile.c0{background:var(--yel)}.tile.c1{background:var(--pink)}.tile.c2{background:var(--sky)}
+.tile.w2{grid-column:span 2}.tile.w3{grid-column:1/-1}
+.tile h3{font-size:1rem;letter-spacing:.08em}
+.tile .v{font:400 3.4rem/1 Anton,sans-serif;margin:.3rem 0}
+.tile .v small{font-size:1.2rem}
+.pb{height:12px;border:2px solid var(--ink);border-radius:9px;background:rgba(255,255,255,.6);overflow:hidden}.pb i{display:block;height:100%;background:var(--ink)}
+.tile p{margin:.5rem 0 0;font-size:.93rem;line-height:1.35}
+.grade{background:var(--red)}.grade .v{font-size:9rem}
+.arch .v{font-size:clamp(2.4rem,5vw,4rem)}
+.band{margin:2.4rem 0 .2rem}
+.band h2{font-size:2.2rem}
+#wave{width:100%;height:150px;display:block}
+mark{background:var(--red);color:var(--ink);padding:0 .2em;border-radius:3px;font-weight:600}
+#coach ul{margin:.3rem 0;padding-left:1.2rem}#coach h3{margin:1rem 0 .3rem;font-size:1.3rem}
+audio{width:100%;margin-top:.8rem}
+@media(max-width:820px){.res,.rules{grid-template-columns:1fr}.tile.w2{grid-column:auto}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body data-p="draw">
+<header><span class="logo">Cold Open</span>
+<ol id="track"><li>1 Draw</li><li>2 Research</li><li>3 Speak</li><li>4 Debrief</li></ol></header>
+<main>
+<section id="s-draw">
+  <p class="kick">Get a topic. Learn it in 15. Say it in 1.</p>
+  <div class="belt"><div id="b1"></div></div><div class="belt"><div id="b2"></div></div>
+  <div class="stage">
+    <span class="badge" id="badge">Loading topics…</span>
+    <h1 id="topic" style="margin-top:.8rem">Pull the lever</h1>
+    <p id="angle">A topic you didn’t choose, straight from what people are searching for on Google right now.</p>
+    <div class="row">
+      <button class="btn" id="drawBtn">Pull</button>
+      <button class="btn alt" id="goBtn" hidden>Start research</button>
+      <select id="geo" aria-label="Region"><option value="PK">Pakistan</option><option value="US">United States</option><option value="GB">United Kingdom</option><option value="IN">India</option><option value="AE">UAE</option><option value="CA">Canada</option></select>
+      <select id="src" aria-label="Topic source"><option value="google">Google Trends</option><option value="classic">Classic list</option></select>
+    </div>
+  </div>
+  <div class="rules">
+    <div><b>15 minutes</b>Search, read, watch. Everything except AI assistants.</div>
+    <div><b>Pin your notes</b>Each fact becomes a card. They’re checked against your talk.</div>
+    <div><b>60 seconds live</b>Notes hidden. The mic records, then you get graded.</div>
+  </div>
+</section>
+
+<section id="s-research">
+  <div class="res">
+    <div>
+      <div id="clock">15:00</div>
+      <h2 id="rtopic"></h2><p id="rangle" style="opacity:.85"></p>
+      <div class="row"><button class="btn alt" id="doneBtn">Ready to go live</button></div>
+    </div>
+    <div>
+      <label for="noteIn" class="kick" style="display:block">Pin a fact, number, name or example</label>
+      <div class="note"><input id="noteIn" autocomplete="off" placeholder="Type it, press Enter"><button class="btn sm" id="addBtn">Pin</button></div>
+      <p id="cnt"></p>
+      <div id="cards"></div>
+    </div>
+  </div>
+</section>
+
+<section id="s-speak">
+  <span class="air" id="air">ON AIR</span>
+  <h2 id="stopic"></h2>
+  <div class="ring"><svg viewBox="0 0 260 260"><circle cx="130" cy="130" r="120" stroke="currentColor" opacity=".18"/><circle id="rg" cx="130" cy="130" r="120"/></svg><div class="d" id="sec">60</div></div>
+  <canvas id="live" width="640" height="70"></canvas>
+  <p id="sstat">Your notes are hidden. Explain it like you’re telling a smart friend. A 3-second count starts the minute.</p>
+  <div class="row" style="justify-content:center"><button class="btn" id="beginBtn">Allow mic and go live</button><button class="btn alt" id="stopBtn" hidden>Finish early</button></div>
+</section>
+
+<section id="s-debrief"><div id="res"><h2 style="font-size:3rem">Rewinding the tape…</h2></div></section>
+</main>
+
+<script>
+const $=s=>document.querySelector(s);
+const CL=[
+["Technology","The right to repair","Should companies be forced to let you fix what you own?"],
+["Technology","How GPS works","What has to happen for a phone to know where it is?"],
+["Technology","Quantum computing","What can it do that normal computers can’t?"],
+["Technology","Undersea internet cables","How does most of the world’s data actually travel?"],
+["Science","Why we sleep","What happens to body and brain when sleep is cut short?"],
+["Science","CRISPR gene editing","What can it fix today, and where are the limits?"],
+["Science","Antibiotic resistance","Why is it growing and what can be done?"],
+["Economy","Inflation","What causes prices to rise and who gets hurt most?"],
+["Economy","Microfinance","Does lending tiny amounts to the poor lift people up?"],
+["Economy","How a stock market works","Why does a price change every second?"],
+["Economy","Remittances","Why does money sent home matter so much?"],
+["Society","Misinformation","Why does false news travel faster than true news?"],
+["Society","Universal basic income","Would paying everyone a baseline help or backfire?"],
+["Society","Girls’ education","What changes for a country when more girls finish school?"],
+["Environment","Water scarcity","Which regions are most at risk and why?"],
+["Environment","Solar power","Why did it get so cheap, and what is still hard?"],
+["Environment","Electric vehicles","Are they really cleaner once you count everything?"],
+["History","The Silk Road","What really moved along it besides silk?"],
+["History","Partition of 1947","What happened and how does it still shape South Asia?"],
+["History","The printing press","How did it change who could know things?"],
+["Mind","Habit formation","How do habits form and how do you break one?"],
+["Mind","Public speaking anxiety","Why does the body panic and what helps?"],
+["Health","Vaccines","How do they train the body, and how do we know they’re safe?"],
+["Culture","Cricket’s global business","How did a sport become a billion-dollar industry?"],
+["Culture","Fast fashion","Who pays the real price of a cheap shirt?"]
+].map(([cat,title,angle])=>({cat,title,angle}));
+const STOP=new Set('because through though would should could between another before about there their these those being having where which while around really something'.split(' '));
+const clamp=(n,a=0,b=100)=>Math.max(a,Math.min(b,Math.round(n)));
+const fmt=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ORDER=['draw','research','speak','debrief'];
+let TOPICS=CL,pick=null,spinning=false,last=-1,cards=[],notes='';
+
+function go(p){
+  document.body.dataset.p=p;document.body.style.setProperty('--pct','0%');
+  const i=ORDER.indexOf(p);
+  document.querySelectorAll('#track li').forEach((li,k)=>li.className=k<i?'done':k===i?'now':'');
+  window.scrollTo(0,0);
+}
+go('draw');
+
+/* ---------- topics: Google Trends via local server ---------- */
+function belts(){
+  const t=TOPICS.map(x=>x.title),half=Math.ceil(t.length/2);
+  const row=a=>{const h=a.map(x=>`<span>${esc(x)} ✦</span>`).join('');return h+h};
+  $('#b1').innerHTML=row(t.slice(0,half));$('#b2').innerHTML=row(t.slice(half).length?t.slice(half):t);
+}
+async function loadTopics(){
+  const badge=$('#badge');badge.textContent='Fetching topics…';
+  if($('#src').value==='google'){
+    try{
+      const r=await fetch('/api/topics?geo='+$('#geo').value);
+      const a=await r.json();if(!Array.isArray(a)||!a.length)throw 0;
+      TOPICS=a.map(i=>({cat:(i.traffic?i.traffic+' searches':'Trending')+' on Google',title:i.title,
+        angle:(i.news?'In the news: '+i.news+(i.source?' ('+i.source+')':'')+'. ':'')+'What is it, and why is everyone searching for it?'}));
+      badge.textContent='Live from Google Trends · '+$('#geo').selectedOptions[0].text;
+    }catch(e){
+      TOPICS=CL;badge.textContent='Google unreachable. Using the classic list';
+    }
+  }else{TOPICS=CL;badge.textContent='Classic topic list'}
+  belts();
+}
+$('#geo').onchange=$('#src').onchange=loadTopics;
+loadTopics();
+
+$('#drawBtn').onclick=()=>{
+  if(spinning)return;spinning=true;
+  $('#goBtn').hidden=true;$('#angle').textContent='';
+  const t=$('#topic');t.classList.add('spin');
+  const quick=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  let n=0;const max=quick?1:20;
+  const iv=setInterval(()=>{
+    t.textContent=TOPICS[Math.floor(Math.random()*TOPICS.length)].title;
+    if(++n>=max){
+      clearInterval(iv);
+      let k;do{k=Math.floor(Math.random()*TOPICS.length)}while(k===last&&TOPICS.length>1);
+      last=k;pick=TOPICS[k];
+      t.classList.remove('spin');t.textContent=pick.title;
+      $('#angle').textContent=pick.cat+'. '+pick.angle;
+      $('#goBtn').hidden=false;$('#drawBtn').textContent='Redraw';spinning=false;
+    }
+  },quick?10:75);
+};
+$('#goBtn').onclick=startResearch;
+
+/* ---------- research ---------- */
+let rIv,rEnd;const RT=900;
+function renderCards(){
+  $('#cards').innerHTML=cards.map((c,i)=>`<button data-i="${i}" title="Click to remove">${esc(c)}</button>`).join('');
+  $('#cnt').textContent=cards.length?cards.length+(cards.length===1?' fact pinned':' facts pinned'):'Nothing pinned yet.';
+}
+function addNote(){const v=$('#noteIn').value.trim();if(v){cards.push(v);$('#noteIn').value='';renderCards()}$('#noteIn').focus()}
+$('#addBtn').onclick=addNote;
+$('#noteIn').onkeydown=e=>{if(e.key==='Enter')addNote()};
+$('#cards').onclick=e=>{const b=e.target.closest('button');if(b){cards.splice(+b.dataset.i,1);renderCards()}};
+function startResearch(){
+  $('#rtopic').textContent=pick.title;$('#rangle').textContent=pick.angle;
+  cards=[];renderCards();go('research');
+  rEnd=Date.now()+RT*1000;clearInterval(rIv);
+  const tick=()=>{
+    const left=Math.max(0,Math.ceil((rEnd-Date.now())/1000));
+    $('#clock').textContent=fmt(left);$('#clock').classList.toggle('late',left<=60);
+    document.body.style.setProperty('--pct',((RT-left)/RT*100)+'%');
+    if(left<=0){clearInterval(rIv);toSpeak()}
+  };
+  tick();rIv=setInterval(tick,250);
+}
+$('#doneBtn').onclick=()=>{clearInterval(rIv);toSpeak()};
+
+/* ---------- speak ---------- */
+let stream,ac,an,mr,chunks=[],sr,srText='',levels=[],t0,lIv,recording=false,blobUrl='';
+function toSpeak(){
+  const pending=$('#noteIn').value.trim();if(pending)cards.push(pending);
+  notes=cards.join('\n');
+  $('#stopic').textContent=pick.title;$('#sec').textContent='60';$('#rg').style.strokeDashoffset=0;
+  $('#air').classList.remove('on');$('#beginBtn').hidden=false;$('#stopBtn').hidden=true;
+  go('speak');
+}
+$('#beginBtn').onclick=async()=>{
+  const st=$('#sstat');
+  try{stream=await navigator.mediaDevices.getUserMedia({audio:true})}
+  catch(e){st.textContent='The microphone is blocked. Allow mic access for this site in your browser, then press the button again.';return}
+  $('#beginBtn').hidden=true;
+  ac=new (window.AudioContext||window.webkitAudioContext)();
+  an=ac.createAnalyser();an.fftSize=1024;ac.createMediaStreamSource(stream).connect(an);
+  let c=3;st.textContent='';$('#sec').textContent=c;
+  const cd=setInterval(()=>{c--;if(c>0)$('#sec').textContent=c;else{clearInterval(cd);startRec()}},900);
+};
+function startRec(){
+  chunks=[];levels=[];srText='';recording=true;$('#air').classList.add('on');
+  try{mr=new MediaRecorder(stream);mr.ondataavailable=e=>e.data.size&&chunks.push(e.data);
+    mr.onstop=()=>{blobUrl=URL.createObjectURL(new Blob(chunks,{type:mr.mimeType||'audio/webm'}));const a=$('#play');if(a)a.src=blobUrl};mr.start()}catch(e){mr=null}
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(SR){try{
+    sr=new SR();sr.continuous=true;sr.interimResults=true;sr.lang='en-US';
+    sr.onresult=e=>{let s='';for(let i=0;i<e.results.length;i++)s+=e.results[i][0].transcript+' ';srText=s};
+    sr.onend=()=>{if(recording)try{sr.start()}catch(_){}};sr.start();
+  }catch(e){sr=null}}
+  $('#stopBtn').hidden=false;$('#sstat').textContent='You’re live. Keep going until the ring closes.';
+  t0=Date.now();
+  const buf=new Uint8Array(an.fftSize),cx=$('#live').getContext('2d');
+  lIv=setInterval(()=>{
+    an.getByteTimeDomainData(buf);
+    let s=0;for(const v of buf){const d=(v-128)/128;s+=d*d}
+    levels.push(Math.sqrt(s/buf.length));
+    const el=(Date.now()-t0)/1000;
+    $('#sec').textContent=Math.ceil(Math.max(0,60-el));
+    $('#rg').style.strokeDashoffset=754*(el/60);
+    cx.clearRect(0,0,640,70);
+    levels.slice(-64).forEach((v,i)=>{const h=Math.max(4,Math.min(68,v*480));cx.fillStyle=i%3?'#FF4B2B':'#FFD21F';cx.fillRect(i*10,35-h/2,7,h)});
+    if(el>=60)finish();
+  },100);
+}
+$('#stopBtn').onclick=()=>finish();
+function finish(){
+  if(!recording)return;recording=false;clearInterval(lIv);$('#air').classList.remove('on');
+  const el=Math.min(60,(Date.now()-t0)/1000);
+  try{sr&&sr.stop()}catch(e){}
+  try{mr&&mr.state!=='inactive'&&mr.stop()}catch(e){}
+  stream.getTracks().forEach(t=>t.stop());ac.close();
+  setTimeout(()=>analyze(el),600);
+}
+
+/* ---------- analysis ---------- */
+const FILL=/\b(um+|uh+|erm|er|you know|i mean|basically|actually|literally|kind of|sort of|like)\b/gi;
+function findPauses(lv,th){
+  const out=[];const first=lv.findIndex(v=>v>=th);if(first<0)return out;let s=-1;
+  for(let i=first;i<lv.length;i++){if(lv[i]<th){if(s<0)s=i}else{if(s>=0&&i-s>=7)out.push([s,i]);s=-1}}
+  return out;
+}
+let M={};
+function analyze(el){
+  go('debrief');
+  const text=srText.trim(),words=text.toLowerCase().match(/[a-z']+/g)||[],has=words.length>=8;
+  const sorted=[...levels].sort((a,b)=>a-b),p80=sorted[Math.floor(sorted.length*.8)]||0,th=Math.max(.008,p80*.3);
+  const ps=findPauses(levels,th),longest=ps.reduce((m,p)=>Math.max(m,(p[1]-p[0])/10),0);
+  const voiced=levels.filter(v=>v>=th),mean=voiced.reduce((a,b)=>a+b,0)/(voiced.length||1);
+  const sd=Math.sqrt(voiced.reduce((a,b)=>a+(b-mean)**2,0)/(voiced.length||1));
+  const cv=sd/(mean||1),talk=levels.length?voiced.length/levels.length:0;
+  const wpm=has?words.length/(el/60):0,fills=(text.match(FILL)||[]).length,frate=has?fills/words.length*100:0;
+  const ttr=has?new Set(words).size/words.length:0;
+  const nw=notes.toLowerCase().match(/[a-z']+/g)||[];
+  const keys=[...new Set(nw.filter(w=>w.length>=6&&!STOP.has(w)))];
+  const spoken=new Set(words.map(w=>w.slice(0,5)));
+  const used=keys.filter(k=>spoken.has(k.slice(0,5))).length;
+  const specifics=(text.match(/\b\d[\d,.]*\b/g)||[]).length;
+  M={el:Math.round(el),words:words.length,wpm:Math.round(wpm),fills,pauses:ps.length,longest:+longest.toFixed(1),factsPinned:cards.length,noteWords:nw.length,keys:keys.length,used,specifics};
+  const pace=clamp(100-Math.abs(wpm-145)*2.2),clean=clamp(100-frate*14),
+    pz=clamp(100-Math.abs(ps.length-4)*9-(longest>3?25:0)),vary=clamp((cv-.25)/.5*100),
+    depth=clamp(Math.max(nw.length/200,cards.length/8)*100),cover=clamp(used/Math.max(1,Math.min(keys.length,12))*100),spec=clamp(specifics/3*100);
+  const all=[pz,vary,depth].concat(has?[pace,clean,cover,spec]:[]),overall=clamp(all.reduce((a,b)=>a+b,0)/all.length);
+  const grade=overall>=85?'A':overall>=70?'B':overall>=55?'C':'D';
+  let arch=['The Explainer','Natural pace, clear point.'];
+  if(has&&wpm>165)arch=['The Sprinter','Fast and packed. Slow down on the one thing you want remembered.'];
+  else if(has&&wpm<115)arch=['The Deliberate Thinker','Careful with every word. Add energy and you’ll sound as sure as you are.'];
+  else if(vary>60&&ps.length>=3)arch=['The Storyteller','You vary your voice and use silence for effect.'];
+  else if(vary<35)arch=['The Steady Narrator','Calm and even. Stress your key words so they land.'];
+  if(!has)arch=['The Mystery','No transcript came through, so this grades only how your voice behaved.'];
+  const T=(c,l,v,p,n)=>`<div class="tile ${c}"><h3>${l}</h3><div class="v">${v}</div><div class="pb"><i style="width:${p}%"></i></div><p>${n}</p></div>`;
+  const hl=esc(text).replace(FILL,x=>`<mark>${x}</mark>`);
+  $('#res').innerHTML=`
+  <p class="kick">${esc(pick.title)} · ${M.el} seconds on air</p>
+  <div class="bento">
+   <div class="tile grade"><h3>On-air grade</h3><div class="v">${grade}</div><p>${overall}/100 across delivery and research.</p></div>
+   <div class="tile arch c0 w2"><h3>Your style</h3><div class="v">${arch[0]}</div><p>${arch[1]}</p></div>
+   <div class="tile w3"><h3>Your voice, tenth of a second at a time</h3><canvas id="wave" width="1200" height="150"></canvas><p>Red bands are pauses of 0.7 seconds or more.</p><audio id="play" controls ${blobUrl?`src="${blobUrl}"`:''}></audio></div>
+  </div>
+  <div class="band"><h2>Speaking</h2></div>
+  <div class="bento">
+   ${has?T('c2','Pace',M.wpm+' <small>wpm</small>',pace,'130 to 160 is easy to follow.')+T('c1','Filler words',fills,clean,'Counts “like”, “you know”, “basically”.'):'<div class="tile"><h3>No transcript</h3><p>Word-level feedback needs speech recognition. Use Chrome or Edge.</p></div>'}
+   ${T('c0','Pauses',ps.length,pz,'Longest '+M.longest+' s. Three to five deliberate pauses is a good range.')}
+   ${T('','Vocal variety',vary+'<small>/100</small>',vary,'How much your loudness rises and falls.')}
+   ${has?T('c2','Word variety',Math.round(ttr*100)+'<small>%</small>',clamp((ttr-.45)/.4*100),'Share of words that weren’t repeats.'):''}
+  </div>
+  <div class="band"><h2>Research</h2></div>
+  <div class="bento">
+   ${T('c0','Notes depth',cards.length+' <small>facts</small>',depth,M.noteWords+' words pinned. About 8 facts shows real digging.')}
+   ${has?T('c1','Notes put to use',M.used+'<small>/'+M.keys+'</small>',cover,'Key terms from your notes you actually said.')+T('c2','Specifics',M.specifics,spec,'Numbers in your talk. Three or more persuades.'):''}
+  </div>
+  ${has?`<div class="bento" style="margin-top:1.1rem"><div class="tile w3"><h3>What the mic heard</h3><p style="font-size:1.05rem">${hl}</p></div></div>`:''}
+  <div class="bento" style="margin-top:1.1rem"><div class="tile w3" id="coach" hidden><button class="btn sm" id="coachBtn" hidden>Get coach notes from Claude</button></div></div>
+  <div class="row"><button class="btn" id="again">Next topic</button></div>`;
+  drawWave(levels,ps,th);
+  $('#again').onclick=()=>{$('#topic').textContent='Pull the lever';$('#angle').textContent='Another topic you didn’t choose.';$('#goBtn').hidden=true;$('#drawBtn').textContent='Pull';go('draw')};
+  const wire=ask=>{$('#coach').hidden=false;$('#coachBtn').hidden=false;$('#coachBtn').onclick=()=>coach(ask,text)};
+  fetch('/api/status').then(r=>r.json()).then(j=>{if(j.coach)wire(async p=>{const r=await fetch('/api/coach',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:p})});if(!r.ok)throw{};return r.json()})}).catch(()=>{});
+}
+function drawWave(lv,ps,th){
+  const x=$('#wave').getContext('2d'),mx=[...lv].sort((a,b)=>a-b)[Math.floor(lv.length*.95)]||.1,w=1200/Math.max(lv.length,60);
+  ps.forEach(([a,b])=>{x.fillStyle='rgba(255,75,43,.3)';x.fillRect(a*w,0,(b-a)*w,150)});
+  lv.forEach((v,i)=>{const h=Math.max(2,Math.min(130,v/mx*120));x.fillStyle=v<th?'#FF4B2B':'#16120F';x.fillRect(i*w,75-h/2,w-.6,h)});
+}
+async function coach(ask,text){
+  const box=$('#coach');box.innerHTML='<p>Claude is reading your transcript and notes…</p>';
+  const prompt=`You are a direct, kind speaking and research coach. A person was given the topic "${pick.title}" (${pick.angle}). They researched for 15 minutes without AI, pinned notes, then spoke from memory for up to 60 seconds. Judge only from this data and don't invent what they said. If the transcript is empty, say so and coach on notes only. For news-style topics, flag claims that look doubtful.
+Return JSON only, no markdown: {"style":"2-4 word style name","styleNote":"1-2 sentences","strengths":["...","..."],"improve":["...","..."],"research":{"score":0-100,"note":"2 sentences on depth, vague or doubtful claims, notes left unused"},"structure":"1-2 sentences on opening, middle and close","drill":"one 5-minute practice exercise"}
+METRICS: ${JSON.stringify(M)}
+NOTES: ${notes.slice(0,3000)||'(none)'}
+TRANSCRIPT: ${text||'(none)'}`;
+  try{
+    const r=await ask(prompt),li=a=>'<ul>'+(a||[]).map(t=>`<li>${esc(String(t))}</li>`).join('')+'</ul>';
+    box.innerHTML=`<h3>Coach: ${esc(r.style||'')}</h3><p>${esc(r.styleNote||'')}</p><h3>What worked</h3>${li(r.strengths)}<h3>Work on</h3>${li(r.improve)}<h3>Research quality: ${clamp(+(r.research&&r.research.score)||0)}/100</h3><p>${esc((r.research&&r.research.note)||'')}</p><h3>Structure</h3><p>${esc(r.structure||'')}</p><h3>Practice drill</h3><p>${esc(r.drill||'')}</p>`;
+  }catch(e){
+    box.innerHTML='<p>Coach notes failed. Check your API key and internet, then try again.</p><button class="btn sm" id="retry">Try again</button>';
+    $('#retry').onclick=()=>coach(ask,text);
+  }
+}
+</script>
+</body>
+</html>
